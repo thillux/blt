@@ -1008,6 +1008,8 @@ extern int Blt_TreeViewTextOp _ANSI_ARGS_((TreeView *tvPtr, Tcl_Interp *interp,
 	int objc, Tcl_Obj *CONST *objv));
 extern int Blt_TreeViewCombobox _ANSI_ARGS_((TreeView *tvPtr,
 	TreeViewEntry *entryPtr, TreeViewColumn *columnPtr));
+extern int Blt_TreeViewTextbox _ANSI_ARGS_((TreeView *tvPtr,
+	TreeViewEntry *entryPtr, TreeViewColumn *columnPtr));
 extern int Blt_TreeViewCreateEntry _ANSI_ARGS_((TreeView *tvPtr, 
 	Blt_TreeNode node, int objc, Tcl_Obj *CONST *objv, int flags));
 extern int Blt_TreeViewConfigureEntry _ANSI_ARGS_((TreeView *tvPtr, 
