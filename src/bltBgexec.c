@@ -29,6 +29,8 @@
 
 #include "bltInt.h"
 
+#include <errno.h>
+
 #ifndef NO_BGEXEC
 
 #include <fcntl.h>
