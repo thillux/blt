@@ -323,57 +323,6 @@ if test "${blt_cv_have_isfinite}" = "yes"; then
 fi
 AC_MSG_RESULT([$blt_cv_have_isfinite])
 
-# -----------------------------------------------------------------------
-#
-# 	Check the smallest value such that 1.0 + x != 1.0.
-#	For ANSI compilers this is DBL_EPSILON in float.h
-#
-#--------------------------------------------------------------------
-
-AC_MSG_CHECKING([whether DBL_EPSILON is defined in float.h])
-AC_CACHE_VAL(blt_cv_found_dbl_epsilon,
-    AC_EGREP_CPP(yes,
-   [
-#ifdef HAVE_FLOAT_H
-#include <float.h>
-#endif
-#ifdef DBL_EPSILON
- yes
-#endif
-], blt_cv_found_dbl_epsilon=yes, blt_cv_found_dbl_epsilon=no)
-)
-AC_MSG_RESULT([${blt_cv_found_dbl_epsilon}])
-
-if test "${blt_cv_found_dbl_epsilon}" = "no" ; then
-  AC_CACHE_VAL(blt_cv_dbl_epsilon,
-  old_flags="$CFLAGS"
-  CFLAGS="-g -lm"
-  AC_MSG_CHECKING([whether DBL_EPSILON can be computed])
-  AC_TRY_RUN(blt_cv_dbl_epsilon, [
-main () {
-    double e, u;
-    /*
-     *	Check the smallest value such that 1.0 + x != 1.0.
-     *	For ANSI compilers this is DBL_EPSILON in float.h
-     */
-    u = 1.0;
-    for(;;) {
-       u *= 0.5;
-       if ((1.0 + u) == 1.0) {
-	   break;
-       }
-    }
-    e = u * 2.0;
-    printf("%.17e\n", e);
-    exit(0);
-}])
-    CFLAGS="$old_flags"
-    AC_DEFINE_UNQUOTED(BLT_DBL_EPSILON, ${blt_cv_dbl_epsilon})
-    AC_MSG_RESULT([${blt_cv_dbl_epsilon}])
-)
-fi
-
-
 AC_MSG_CHECKING([whether declaration is needed for strdup])
 AC_CACHE_VAL(blt_cv_nedd_decl_strdup,
     AC_EGREP_CPP(strdup, [
