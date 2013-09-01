@@ -27,6 +27,7 @@
  */
 
 #include "bltVecInt.h"
+#include <errno.h>
 
 /*
  * Three types of math functions:
@@ -226,7 +227,7 @@ extern double drand48 _ANSI_ARGS_((void));
  * First --
  *
  *	Gets the first index of the designated interval.  The interval
- *	is between vPtr->first and vPtr->last.  But the range may 
+ *	is between vPtr->first and vPtr->last.  But the range may
  *	NaN or Inf values that should be ignored.
  *
  * Results:
@@ -234,9 +235,9 @@ extern double drand48 _ANSI_ARGS_((void));
  *	interval.  If no finite values exists in the range, then -1 is
  *	returned.
  *
- *-------------------------------------------------------------- 
+ *--------------------------------------------------------------
  */
-static int 
+static int
 First(vPtr)
     VectorObject *vPtr;
 {
@@ -256,17 +257,17 @@ First(vPtr)
  * Next --
  *
  *	Gets the next index of the designated interval.  The interval
- *	is between vPtr->first and vPtr->last.  Ignore NaN or Inf 
+ *	is between vPtr->first and vPtr->last.  Ignore NaN or Inf
  *	values.
  *
  * Results:
  *	Returns the index of the next finite value in the designated
- *	interval.  If no more finite values exists in the range, 
+ *	interval.  If no more finite values exists in the range,
  *	then -1 is returned.
  *
- *-------------------------------------------------------------- 
+ *--------------------------------------------------------------
  */
-static int 
+static int
 Next(vPtr, current)
     VectorObject *vPtr;
     int current;
@@ -286,7 +287,7 @@ Next(vPtr, current)
  *
  * Sort --
  *
- *	A vector math function.  Sorts the values of the given 
+ *	A vector math function.  Sorts the values of the given
  *	vector.
  *
  * Results:
@@ -295,7 +296,7 @@ Next(vPtr, current)
  * Side Effects:
  *	The vector is sorted.
  *
- *-------------------------------------------------------------- 
+ *--------------------------------------------------------------
  */
 static int
 Sort(vPtr)
@@ -355,10 +356,10 @@ Blt_VecMin(vecPtr)
 	for (/* empty */; i < vPtr->length; i++) {
 	    if (FINITE(vPtr->valueArr[i])) {
 		if (min > vPtr->valueArr[i]) {
-		    min = vPtr->valueArr[i]; 
-		} 
-	    } 
-	} 
+		    min = vPtr->valueArr[i];
+		}
+	    }
+	}
 	vPtr->min = min;
     }
     return vPtr->min;
@@ -384,10 +385,10 @@ Blt_VecMax(vecPtr)
 	for (/* empty */; i < vPtr->length; i++) {
 	    if (FINITE(vPtr->valueArr[i])) {
 		if (max < vPtr->valueArr[i]) {
-		    max = vPtr->valueArr[i]; 
-		} 
-	    } 
-	} 
+		    max = vPtr->valueArr[i];
+		}
+	    }
+	}
 	vPtr->max = max;
     }
     return vPtr->max;
@@ -554,10 +555,10 @@ Median(vecPtr)
     iArr = Blt_VectorSortIndex(&vPtr, 1);
     mid = (vPtr->length - 1) / 2;
 
-    /*  
+    /*
      * Determine Q2 by checking if the number of elements [0..n-1] is
      * odd or even.  If even, we must take the average of the two
-     * middle values.  
+     * middle values.
      */
     if (vPtr->length & 1) {	/* Odd */
 	q2 = vPtr->valueArr[iArr[mid]];
@@ -578,7 +579,7 @@ Q1(vecPtr)
 
     if (vPtr->length == 0) {
 	return -DBL_MAX;
-    } 
+    }
     iArr = Blt_VectorSortIndex(&vPtr, 1);
 
     if (vPtr->length < 4) {
@@ -589,15 +590,15 @@ Q1(vecPtr)
 	mid = (vPtr->length - 1) / 2;
 	q = mid / 2;
 
-	/* 
+	/*
 	 * Determine Q1 by checking if the number of elements in the
 	 * bottom half [0..mid) is odd or even.   If even, we must
 	 * take the average of the two middle values.
 	 */
 	if (mid & 1) {		/* Odd */
-	    q1 = vPtr->valueArr[iArr[q]]; 
+	    q1 = vPtr->valueArr[iArr[q]];
 	} else {		/* Even */
-	    q1 = (vPtr->valueArr[iArr[q]] + vPtr->valueArr[iArr[q + 1]]) * 0.5; 
+	    q1 = (vPtr->valueArr[iArr[q]] + vPtr->valueArr[iArr[q + 1]]) * 0.5;
 	}
     }
     Blt_Free(iArr);
@@ -614,7 +615,7 @@ Q3(vecPtr)
 
     if (vPtr->length == 0) {
 	return -DBL_MAX;
-    } 
+    }
 
     iArr = Blt_VectorSortIndex(&vPtr, 1);
 
@@ -626,7 +627,7 @@ Q3(vecPtr)
 	mid = (vPtr->length - 1) / 2;
 	q = (vPtr->length + mid) / 2;
 
-	/* 
+	/*
 	 * Determine Q3 by checking if the number of elements in the
 	 * upper half (mid..n-1] is odd or even.   If even, we must
 	 * take the average of the two middle values.
@@ -634,7 +635,7 @@ Q3(vecPtr)
 	if (mid & 1) {		/* Odd */
 	    q3 = vPtr->valueArr[iArr[q]];
 	} else {		/* Even */
-	    q3 = (vPtr->valueArr[iArr[q]] + vPtr->valueArr[iArr[q + 1]]) * 0.5; 
+	    q3 = (vPtr->valueArr[iArr[q]] + vPtr->valueArr[iArr[q + 1]]) * 0.5;
 	}
     }
     Blt_Free(iArr);
@@ -768,13 +769,13 @@ MathError(interp, value)
 	    (char *)NULL);
     } else if ((errno == ERANGE) || IS_INF(value)) {
 	if (value == 0.0) {
-	    Tcl_AppendResult(interp, 
+	    Tcl_AppendResult(interp,
 			     "floating-point value too small to represent",
 		(char *)NULL);
 	    Tcl_SetErrorCode(interp, "ARITH", "UNDERFLOW", Tcl_GetStringResult(interp),
 		(char *)NULL);
 	} else {
-	    Tcl_AppendResult(interp, 
+	    Tcl_AppendResult(interp,
 			     "floating-point value too large to represent",
 		(char *)NULL);
 	    Tcl_SetErrorCode(interp, "ARITH", "OVERFLOW", Tcl_GetStringResult(interp),
@@ -825,7 +826,7 @@ ParseString(interp, string, valuePtr)
 
     errno = 0;
 
-    /*   
+    /*
      * The string can be either a number or a vector.  First try to
      * convert the string to a number.  If that fails then see if
      * we can find a vector by that name.
@@ -848,15 +849,15 @@ ParseString(interp, string, valuePtr)
 	VectorObject *vPtr;
 
 	while (isspace(UCHAR(*string))) {
-	    string++;		/* Skip spaces leading the vector name. */    
+	    string++;		/* Skip spaces leading the vector name. */
 	}
-	vPtr = Blt_VectorParseElement(interp, valuePtr->vPtr->dataPtr, string, 
+	vPtr = Blt_VectorParseElement(interp, valuePtr->vPtr->dataPtr, string,
 		      &endPtr, NS_SEARCH_BOTH);
 	if (vPtr == NULL) {
 	    return TCL_ERROR;
 	}
 	if (*endPtr != '\0') {
-	    Tcl_AppendResult(interp, "extra characters after vector", 
+	    Tcl_AppendResult(interp, "extra characters after vector",
 			     (char *)NULL);
 	    return TCL_ERROR;
 	}
@@ -1054,7 +1055,7 @@ NextToken(interp, parsePtr, valuePtr)
 
     case '"':
 	parsePtr->token = VALUE;
-	result = TclParseQuotes(interp, p + 1, '"', 0, &endPtr, 
+	result = TclParseQuotes(interp, p + 1, '"', 0, &endPtr,
 		&(valuePtr->pv));
 	if (result != TCL_OK) {
 	    return result;
@@ -1188,9 +1189,9 @@ NextToken(interp, parsePtr, valuePtr)
 	    VectorObject *vPtr;
 
 	    while (isspace(UCHAR(*p))) {
-		p++;		/* Skip spaces leading the vector name. */    
+		p++;		/* Skip spaces leading the vector name. */
 	    }
-	    vPtr = Blt_VectorParseElement(interp, valuePtr->vPtr->dataPtr, p, 
+	    vPtr = Blt_VectorParseElement(interp, valuePtr->vPtr->dataPtr, p,
 		  &endPtr, NS_SEARCH_BOTH);
 	    if (vPtr == NULL) {
 		return TCL_ERROR;
@@ -1322,7 +1323,7 @@ NextValue(interp, parsePtr, prec, valuePtr)
 
 	value2.pv.next = value2.pv.buffer;
 	if ((operator < MULT) || (operator >= UNARY_MINUS)) {
-	    if ((operator == END) || (operator == CLOSE_PAREN) || 
+	    if ((operator == END) || (operator == CLOSE_PAREN) ||
 		(operator == COMMA)) {
 		result = TCL_OK;
 		goto done;
@@ -1481,13 +1482,13 @@ NextValue(interp, parsePtr, prec, valuePtr)
 		    if (offset > 0) {
 			double *hold;
 			register int j;
-			
+
 			hold = Blt_Malloc(sizeof(double) * offset);
-			for (i = vPtr->length - offset, j = 0; 
+			for (i = vPtr->length - offset, j = 0;
 			     i < vPtr->length; i++, j++) {
 			    hold[j] = opnd[i];
 			}
-			for (i = vPtr->length - offset - 1, 
+			for (i = vPtr->length - offset - 1,
 				 j = vPtr->length - 1; i >= 0; i--, j--) {
 			    opnd[j] = opnd[i];
 			}
@@ -1957,7 +1958,7 @@ Blt_VectorUninstallMathFunctions(tablePtr)
     Blt_HashEntry *hPtr;
     Blt_HashSearch cursor;
 
-    for (hPtr = Blt_FirstHashEntry(tablePtr, &cursor); hPtr != NULL; 
+    for (hPtr = Blt_FirstHashEntry(tablePtr, &cursor); hPtr != NULL;
 	hPtr = Blt_NextHashEntry(&cursor)) {
 	mathPtr = (MathFunction *) Blt_GetHashValue(hPtr);
 	if (mathPtr->name == NULL) {
@@ -2031,7 +2032,7 @@ Blt_ExprVector(interp, string, vecPtr)
     VectorObject *vPtr = (VectorObject *)vecPtr;
     Value value;
 
-    dataPtr = (vecPtr != NULL) 
+    dataPtr = (vecPtr != NULL)
 	? vPtr->dataPtr : Blt_VectorGetInterpData(interp);
     value.vPtr = Blt_VectorNew(dataPtr);
     if (EvaluateExpression(interp, string, &value) != TCL_OK) {
