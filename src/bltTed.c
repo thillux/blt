@@ -1504,7 +1504,7 @@ EditOp(dataPtr, interp, argc, argv)
 	tablePtr->flags |= ARRANGE_PENDING;
 	Tcl_DoWhenIdle(tablePtr->arrangeProc, tablePtr);
     }
-    interp->result = Tk_PathName(tedPtr->tkwin);
+    Tcl_SetResult(interp, Tk_PathName(tedPtr->tkwin), TCL_VOLATILE);
     tedPtr->flags |= LAYOUT_PENDING;
     EventuallyRedraw(tedPtr);
     return TCL_OK;
@@ -1678,7 +1678,7 @@ SelectOp(dataPtr, interp, argc, argv)
 	    tedPtr->activeRectArr[4].width = grip - 1;
 	    tedPtr->activeRectArr[4].height = grip - 1;
 
-	    interp->result = Tk_PathName(entryPtr->tkwin);
+	    Tcl_SetResult(interp, Tk_PathName(entryPtr->tkwin), TCL_VOLATILE);
 	    active = 1;
 	    break;
 	}
@@ -1751,7 +1751,7 @@ RepOp(dataPtr, interp, argc, argv)
 	tablePtr->flags |= ARRANGE_PENDING;
 	Tcl_DoWhenIdle(tablePtr->arrangeProc, tablePtr);
     }
-    interp->result = Tk_PathName(tedPtr->tkwin);
+    Tcl_SetResult(interp, Tk_PathName(tedPtr->tkwin), TCL_VOLATILE);
     tedPtr->flags |= LAYOUT_PENDING;
     EventuallyRedraw(tedPtr);
     return TCL_OK;

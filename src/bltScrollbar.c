@@ -534,7 +534,10 @@ ScrollbarWidgetCmd(clientData, interp, argc, argv)
 	} else {
 	    fraction = ((double)pixels / (double)barWidth);
 	}
-	sprintf(interp->result, "%g", fraction);
+	int size = snprintf(NULL, 0, "%g", fraction) + 1;
+	char* result_str = (char*) malloc(size);
+	sprintf(result_str, "%g", fraction);
+	Tcl_SetResult(interp, result_str, TCL_STATIC);
     } else if ((c == 'f') && (strncmp(argv[1], "fraction", length) == 0)) {
 	int x, y, pos, barWidth;
 	double fraction;
