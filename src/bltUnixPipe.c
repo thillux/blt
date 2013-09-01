@@ -17,6 +17,7 @@
 #include "bltInt.h"
 #include <fcntl.h>
 #include <signal.h>
+#include <errno.h>
 
 #include "bltWait.h"
 
@@ -740,7 +741,7 @@ Blt_CreatePipeline(interp, argc, argv, pidArrayPtr, inPipePtr,
 	    }
 	    if (*p == '\0') {
 		if ((i == (lastBar + 1)) || (i == (argc - 1))) {
-		    Tcl_AppendResult(interp, 
+		    Tcl_AppendResult(interp,
 				     "illegal use of | or |& in command",
 				     (char *)NULL);
 		    goto error;
