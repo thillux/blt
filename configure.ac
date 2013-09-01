@@ -3,7 +3,7 @@ define([AC_CACHE_SAVE], )dnl
 AC_INIT(src/bltInit.c)
 AC_CONFIG_HEADER(src/bltConfig.h)
 AC_CONFIG_AUX_DIR(cf)
-AC_PREREQ(2.0)	
+AC_PREREQ(2.0)
 
 # -----------------------------------------------------------------------
 #
@@ -11,9 +11,9 @@ AC_PREREQ(2.0)
 #
 #		--with-tcl=DIR
 #		--with-tk=DIR
-#		--with-cc=CC		
+#		--with-cc=CC
 #		--with-cflags=flags	This is probably for me only
-#		--with-gnu-ld 
+#		--with-gnu-ld
 #
 # -----------------------------------------------------------------------
 
@@ -37,9 +37,9 @@ blt_with_tk_libraries=""
 blt_with_scriptdir=""
 
 AC_ARG_WITH(blt,	[  --with-blt=DIR          Install BLT scripts in DIR],
-  blt_with_scriptdir=$withval) 
+  blt_with_scriptdir=$withval)
 AC_ARG_WITH(tcl,	[  --with-tcl=DIR          Find tclConfig.sh in DIR],
-  blt_with_tcl=$withval) 
+  blt_with_tcl=$withval)
 AC_ARG_WITH(tk,		[  --with-tk=DIR           Find tkConfig.sh in DIR],
   blt_with_tk=$withval)
 AC_ARG_WITH(tclincls,   [  --with-tclincls=DIR     Find tcl.h in DIR],
@@ -57,7 +57,7 @@ AC_ARG_ENABLE(jpeg,	[  --enable-jpeg=DIR       Find JPEG headers and libraries i
 AC_ARG_ENABLE(cygwin,	[  --enable-cygwin         Use cygwin Tcl/Tk libraries. Requires cygwin1.dll], [
   blt_enable_cygwin=$enableval ])
 AC_ARG_WITH(cc,		[  --with-cc=CC            Set C compiler to CC], [
-  blt_with_cc=$with_cc 
+  blt_with_cc=$with_cc
   unset ac_cv_prog_CC
   unset ac_cv_prog_CPP ])
 AC_ARG_WITH(cflags,	[  --with-cflags=FLAGS     Set compiler flags to FLAGS],
@@ -96,7 +96,7 @@ BLT_ENV_CC=$CC
 #
 
 AC_MSG_CHECKING([which C compiler])
-if test "x${blt_with_cc}" != "x" ; then 
+if test "x${blt_with_cc}" != "x" ; then
   CC=${blt_with_cc}
   unset ac_cv_prog_CPP
   unset ac_cv_prog_CC
@@ -106,7 +106,7 @@ elif test "x${BLT_ENV_CC}" != "x" ; then
 elif test "x${blt_cv_prog_cc}" != "x" ; then
   CC=${blt_cv_prog_cc}
   unset ac_cv_prog_CC
-else 
+else
   AC_PROG_CC
 fi
 if test "x${CC}" = "x" ; then
@@ -148,7 +148,7 @@ fi
 #  4. otherwise, default to "-O"
 #
 AC_MSG_CHECKING([default compiler flags])
-if test  "x${blt_with_cflags}" != "x" ; then 
+if test  "x${blt_with_cflags}" != "x" ; then
   CFLAGS=${blt_with_cflags}
 elif test "x${blt_cv_prog_cflags}" != "x" ; then
   CFLAGS=${blt_cv_prog_cflags}
@@ -165,7 +165,7 @@ AC_SUBST(CFLAGS)
 GCCFLAGS=""
 if test "${blt_have_gcc}" = "yes" ; then
   GCCFLAGS="-Wall"
-  if test "${CFLAGS}" = "-g" ; then 
+  if test "${CFLAGS}" = "-g" ; then
     GCCFLAGS="-Wshadow -Winline -Wpointer-arith ${GCCFLAGS}"
   fi
 fi
@@ -179,7 +179,7 @@ case $target in
     blt_platform="win"
     if test "$ac_cv_cygwin" = "yes" ; then
       blt_lib_prefix="cyg"
-    else 
+    else
       blt_lib_prefix=""
     fi
     ;;
@@ -258,19 +258,19 @@ AC_TYPE_PID_T
 
 AC_MSG_CHECKING([whether union wait is defined correctly])
 AC_CACHE_VAL(blt_cv_struct_wait_works,
-    AC_TRY_COMPILE([#include <sys/types.h> 
+    AC_TRY_COMPILE([#include <sys/types.h>
 #include <sys/wait.h>], [
-    /* 
-     *	Check whether <sys/wait.h> defines the type "union wait" 
-     *	correctly.  It's needed because of weirdness in HP-UX where 
-     *	"union wait" is defined in both the BSD and SYS-V  environments.  
+    /*
+     *	Check whether <sys/wait.h> defines the type "union wait"
+     *	correctly.  It's needed because of weirdness in HP-UX where
+     *	"union wait" is defined in both the BSD and SYS-V  environments.
      *	Checking the usability of WIFEXITED seems to do	the trick.
      */
     union wait x;
     WIFEXITED(x);	/* Generates compiler error if WIFEXITED
 			 * uses an int. */
-], 
-    	[blt_cv_struct_wait_works="yes"], 
+],
+    	[blt_cv_struct_wait_works="yes"],
 	[blt_cv_struct_wait_works="no"]))
 
 if test "${blt_cv_struct_wait_works}" = "yes"; then
@@ -280,7 +280,7 @@ AC_MSG_RESULT([$blt_cv_struct_wait_works])
 
 # -----------------------------------------------------------------------
 #
-# Compiler characteristics:	
+# Compiler characteristics:
 #		Check for existence of types of size_t and pid_t
 #
 # -----------------------------------------------------------------------
@@ -332,7 +332,7 @@ AC_MSG_RESULT([$blt_cv_have_isfinite])
 
 AC_MSG_CHECKING([whether DBL_EPSILON is defined in float.h])
 AC_CACHE_VAL(blt_cv_found_dbl_epsilon,
-    AC_EGREP_CPP(yes,	
+    AC_EGREP_CPP(yes,
    [
 #ifdef HAVE_FLOAT_H
 #include <float.h>
@@ -340,19 +340,19 @@ AC_CACHE_VAL(blt_cv_found_dbl_epsilon,
 #ifdef DBL_EPSILON
  yes
 #endif
-], blt_cv_found_dbl_epsilon=yes, blt_cv_found_dbl_epsilon=no) 
+], blt_cv_found_dbl_epsilon=yes, blt_cv_found_dbl_epsilon=no)
 )
 AC_MSG_RESULT([${blt_cv_found_dbl_epsilon}])
 
 if test "${blt_cv_found_dbl_epsilon}" = "no" ; then
-  AC_CACHE_VAL(blt_cv_dbl_epsilon, 
+  AC_CACHE_VAL(blt_cv_dbl_epsilon,
   old_flags="$CFLAGS"
   CFLAGS="-g -lm"
   AC_MSG_CHECKING([whether DBL_EPSILON can be computed])
-  AC_TRY_RUN_WITH_OUTPUT(blt_cv_dbl_epsilon, [
+  AC_TRY_RUN(blt_cv_dbl_epsilon, [
 main () {
     double e, u;
-    /* 
+    /*
      *	Check the smallest value such that 1.0 + x != 1.0.
      *	For ANSI compilers this is DBL_EPSILON in float.h
      */
@@ -375,7 +375,7 @@ fi
 
 
 AC_MSG_CHECKING([whether declaration is needed for strdup])
-AC_CACHE_VAL(blt_cv_nedd_decl_strdup, 
+AC_CACHE_VAL(blt_cv_nedd_decl_strdup,
     AC_EGREP_CPP(strdup, [
 #ifdef HAVE_STDLIB_H
 #include <stdlib.h>
@@ -394,7 +394,7 @@ fi
 AC_MSG_RESULT([$blt_cv_need_decl_strdup])
 
 AC_MSG_CHECKING([whether declaration is needed for drand48])
-AC_CACHE_VAL(blt_cv_need_decl_drand48, 
+AC_CACHE_VAL(blt_cv_need_decl_drand48,
     AC_EGREP_CPP(drand48, [
 #ifdef HAVE_STDLIB_H
 #include <stdlib.h>
@@ -413,7 +413,7 @@ fi
 AC_MSG_RESULT([$blt_cv_need_decl_drand48])
 
 AC_MSG_CHECKING([whether declaration is needed for srand48])
-AC_CACHE_VAL(blt_cv_need_decl_srand48, 
+AC_CACHE_VAL(blt_cv_need_decl_srand48,
     AC_EGREP_CPP(srand48, [
 #ifdef HAVE_STDLIB_H
 #include <stdlib.h>
@@ -432,7 +432,7 @@ fi
 AC_MSG_RESULT([$blt_cv_need_decl_srand48])
 
 AC_MSG_CHECKING([whether declaration is needed for j1])
-AC_CACHE_VAL(blt_cv_need_decl_j1, 
+AC_CACHE_VAL(blt_cv_need_decl_j1,
     AC_EGREP_CPP(j1, [
 #ifdef HAVE_STDLIB_H
 #include <stdlib.h>
@@ -467,11 +467,11 @@ AC_MSG_CHECKING([for tclConfig.sh])
 tcl_config_sh=""
 if test "x$blt_with_tcl" != "x" ; then
 
-  # Verify that a tclConfig.sh file exists in the directory specified 
-  # by --with-tcl. 
+  # Verify that a tclConfig.sh file exists in the directory specified
+  # by --with-tcl.
 
   for dir in \
-   $blt_with_tcl 
+   $blt_with_tcl
   do
     if test -r "$dir/tclConfig.sh" ; then
       tcl_config_sh="$dir/tclConfig.sh"
@@ -484,16 +484,16 @@ if test "x$blt_with_tcl" != "x" ; then
       break
     fi
   done
-else 
+else
 
-  # Otherwise, search for Tcl configuration file.  
+  # Otherwise, search for Tcl configuration file.
 
   #  1. Search previously named locations.
 
   for dir in \
    $prefix \
    $exec_prefix \
-   $blt_cv_tcl_lib 
+   $blt_cv_tcl_lib
   do
     if test -r "$dir/tclConfig.sh" ; then
       tcl_config_sh="$dir/tclConfig.sh"
@@ -516,7 +516,7 @@ else
      `ls -dr ../../tcl[[7-9]].[[0-9]]* 2>/dev/null` \
      ../../tcl \
      `ls -dr ../../../tcl[[7-9]].[[0-9]]* 2>/dev/null` \
-     ../../../tcl 
+     ../../../tcl
     do
       if test -r "$dir/$blt_platform/tclConfig.sh" ; then
 	tcl_config_sh="$dir/$blt_platform/tclConfig.sh"
@@ -562,12 +562,12 @@ AC_MSG_CHECKING([for tkConfig.sh])
 tk_config_sh=""
 if test "x$blt_with_tk" != "x" -o "x$blt_with_tcl" != "x"; then
 
-  # Verify that a tkConfig.sh file exists in the directory specified 
-  # by --with-tcl or --with-tk. 
+  # Verify that a tkConfig.sh file exists in the directory specified
+  # by --with-tcl or --with-tk.
 
   for dir in \
    $blt_with_tk \
-   $blt_with_tcl 
+   $blt_with_tcl
   do
     if test -r "$dir/tkConfig.sh" ; then
       tk_config_sh="$dir/tkConfig.sh"
@@ -580,9 +580,9 @@ if test "x$blt_with_tk" != "x" -o "x$blt_with_tcl" != "x"; then
       break
     fi
   done
-else 
+else
 
-  # Search for Tk configuration file.  
+  # Search for Tk configuration file.
 
   #  1. Search previously named locations.
 
@@ -590,7 +590,7 @@ else
    $prefix \
    $exec_prefix \
    $blt_cv_tk_lib \
-   $blt_cv_tcl_lib 
+   $blt_cv_tcl_lib
   do
     if test -r "$dir/tkConfig.sh" ; then
       tk_config_sh="$dir/tkConfig.sh"
@@ -651,7 +651,7 @@ fi
 
 # -----------------------------------------------------------------------
 #
-#	Source in the Tcl/Tk configuration scripts.  
+#	Source in the Tcl/Tk configuration scripts.
 #
 # -----------------------------------------------------------------------
 
@@ -672,7 +672,7 @@ else
   for dir in \
    ${TCL_PREFIX}/include/tcl${TCL_MAJOR_VERSION}.${TCL_MINOR_VERSION} \
    ${TCL_PREFIX}/include \
-   ${TCL_SRC_DIR}/generic 
+   ${TCL_SRC_DIR}/generic
   do
     if test -r "$dir/tcl.h" ; then
       TCL_INC_DIR=$dir
@@ -753,7 +753,7 @@ if test "x${blt_with_tcl_libraries}" != "x" ; then
 else
   for libname in \
    "${TCL_EXEC_PREFIX}/lib/lib${TCL_LIB_NAME}.${SHLIB_SUFFIX}" \
-   "${TCL_EXEC_PREFIX}/lib/lib${TCL_LIB_NAME}.a" 
+   "${TCL_EXEC_PREFIX}/lib/lib${TCL_LIB_NAME}.a"
   do
     if test -r "$libname" ; then
       TCL_LIB_DIR="${TCL_EXEC_PREFIX}/lib"
@@ -820,7 +820,7 @@ fi
 # Tcl include files
 #
 #	Add the include directory specification only if the Tcl
-#	headers reside in a different directory from Tk's.  
+#	headers reside in a different directory from Tk's.
 if test "${TCL_INC_DIR}" != "/usr/include" -a \
 	"${TCL_INC_DIR}" != "${TK_INC_DIR}" ; then
   INC_SPECS="${INC_SPECS} -I${TCL_INC_DIR}"
@@ -845,7 +845,7 @@ fi
 #
 # Libraries
 #
-#	Append to LIB the various library specifications 
+#	Append to LIB the various library specifications
 #	(built from the library directory information).
 #
 # -----------------------------------------------------------------------
@@ -899,7 +899,7 @@ elif test "${blt_platform}" = "unix"; then
 	  "${x_libraries}" = "${TCL_LIB_DIR}" ; then
     LIB_SPECS="${LIB_SPECS} -lX11"
     aix_lib_specs="${aix_lib_specs} -lX11"
-  else 
+  else
     LIB_SPECS="${LIB_SPECS} -L${x_libraries} -lX11"
     aix_lib_specs="${aix_lib_specs} -L${x_libraries} -lX11"
     if test "x${loader_run_path}" = "x" ; then
@@ -960,14 +960,14 @@ fi
 #
 # -------------------------------------------------------------------------
 AC_MSG_CHECKING([BLT_MAJOR_VERSION])
-AC_CACHE_VAL(blt_cv_major_version, 
+AC_CACHE_VAL(blt_cv_major_version,
 AC_GREP_SYMBOL(blt_cv_major_version, BLT_MAJOR_VERSION, ${srcdir}/src/blt.h)
 )
 BLT_MAJOR_VERSION=${blt_cv_major_version}
 AC_MSG_RESULT([$blt_cv_major_version])
 
 AC_MSG_CHECKING([BLT_MINOR_VERSION])
-AC_CACHE_VAL(blt_cv_minor_version, 
+AC_CACHE_VAL(blt_cv_minor_version,
 AC_GREP_SYMBOL(blt_cv_minor_version, BLT_MINOR_VERSION, ${srcdir}/src/blt.h)
 )
 AC_MSG_RESULT([$blt_cv_minor_version])
@@ -1000,7 +1000,7 @@ TCL_ONLY_LIB_SPECS="${TCL_ONLY_LIB_SPECS} ${LIBS}"
 #
 # -------------------------------------------------------------------------
 AC_MSG_CHECKING([TCL_VERSION in tcl.h])
-AC_CACHE_VAL(blt_cv_tcl_h_version, 
+AC_CACHE_VAL(blt_cv_tcl_h_version,
 AC_GREP_SYMBOL(blt_cv_tcl_h_version, [TCL_VERSION], ${TCL_INC_DIR}/tcl.h)
 )
 eval TCL_H_VERSION=${blt_cv_tcl_h_version}
@@ -1012,7 +1012,7 @@ if test "${TCL_H_VERSION}" != "${TCL_VERSION}" ; then
   exit 1
 fi
 AC_MSG_CHECKING([TK_VERSION in tk.h])
-AC_CACHE_VAL(blt_cv_tk_h_version, 
+AC_CACHE_VAL(blt_cv_tk_h_version,
 AC_GREP_SYMBOL(blt_cv_tk_h_version, [TK_VERSION], ${TK_INC_DIR}/tk.h)
 )
 eval TK_H_VERSION=${blt_cv_tk_h_version}
@@ -1037,9 +1037,9 @@ fi
 
 #--------------------------------------------------------------------
 #
-# Check if we can generate shared libraries on this system.  Set flags 
-# to generate shared libraries for systems that we know about.  Start 
-# with the values found in tclConfig.sh, make changes as we know about 
+# Check if we can generate shared libraries on this system.  Set flags
+# to generate shared libraries for systems that we know about.  Start
+# with the values found in tclConfig.sh, make changes as we know about
 # the different systems.
 #
 #--------------------------------------------------------------------
@@ -1070,7 +1070,7 @@ case $target in
   *-aix4.[[2-9]]*)
     # No Position-Independent flags needed
     SHLIB_CFLAGS=""
-    
+
     # Use the installed export file or the one found in the source directory.
 
     if test -r "${TCL_LIB_DIR}/lib${TCL_LIB_NAME}.exp" ; then
@@ -1083,7 +1083,7 @@ case $target in
     else
       tk_exp="${TK_SRC_DIR}/unix/lib.exp"
     fi
-    
+
     full_src_path=`cd ${srcdir}; pwd`
 
     # Use shell-script to link shared library
@@ -1094,11 +1094,11 @@ case $target in
     LDFLAGS="-L${loader_run_path}"
     EXTRA_LIB_SPECS="-ldl"
     ;;
-  
+
   *-aix*)
     # No Position-Independent flags needed
     SHLIB_CFLAGS=""
-    
+
     # Use the installed export file or the one found in the source directory.
 
     if test -r "${TCL_LIB_DIR}/lib${TCL_LIB_NAME}.exp" ; then
@@ -1119,11 +1119,11 @@ case $target in
     SHLIB_LD="${full_src_path}/ldAix /bin/ld -bhalt:4 -bM:SRE -bE:lib.exp -H512 -T512 -bnoentry -bI:${tk_exp} -bI:${tcl_exp}"
 
     SHLIB_LIB_SPECS="${aix_lib_specs} -lc"
-    
+
     LDFLAGS="-L${loader_run_path}"
     EXTRA_LIB_SPECS="-lld"
     ;;
-  
+
   *-bsdi2*|*-bsdi3*)
     SHLIB_CFLAGS=""
     SHLIB_LD="shlicc"
@@ -1149,10 +1149,10 @@ case $target in
     SHLIB_CFLAGS="-K PIC"
     SHLIB_LD="cc"
     SHLIB_LD_FLAGS="-G"
-    
+
     EXTRA_LIB_SPECS="-ldl"
     ;;
-  
+
   *-hpux*)
     if test "$blt_have_gcc" = "no" ; then
       DEFINES="$DEFINES -D_HPUX_SOURCE"
@@ -1171,7 +1171,7 @@ case $target in
       EXTRA_LIB_SPECS="-ldld"
     fi
     ;;
-  
+
   *-irix64-6.5*)
     SHLIB_CFLAGS=""
     SHLIB_LD="ld"
@@ -1189,22 +1189,22 @@ case $target in
       SHLIB_CFLAGS="-mabi=n32 $SHLIB_CFLAGS"
       SHLIB_LD_FLAGS="-mabi=n32 $SHLIB_LD_FLAGS"
       LDFLAGS="-mabi=n32 $LDFLAGS"
-    else	
+    else
       CFLAGS="-n32 $CFLAGS"
       LDFLAGS="-n32 $LDFLAGS"
     fi
     ;;
-    
+
   *-linux*)
     SHLIB_CFLAGS="-fPIC"
     SHLIB_LD="${CC}"
     SHLIB_LD_FLAGS='-rdynamic -shared -Wl,-E -Wl,-soname,$@'
     LD_RUN_PATH=""
-    
+
     LDFLAGS=""
     EXTRA_LIB_SPECS="-ldl"
     ;;
-  
+
   *-mp-ras-02*)
     SHLIB_CFLAGS="-G -K PIC"
     SHLIB_LD="${CC}"
@@ -1255,7 +1255,7 @@ case $target in
 
     SHLIB_CFLAGS=""
 
-    # Warning: Ugly Makefile Hack 
+    # Warning: Ugly Makefile Hack
     #	Make package name same as library name
 
     SHLIB_LD='ld -R -export $@:'
@@ -1336,7 +1336,7 @@ case $target in
     SHLIB_LD="${CC}"
     SHLIB_LD_FLAGS=" -Wl,-Bexport"
     ;;
-  
+
   *)
     build_shared="no"
     ;;
@@ -1352,7 +1352,7 @@ if test "$blt_have_gcc" = "yes" ; then
   SHLIB_CFLAGS="-fPIC"
 fi
 
-# We can't back link against static versions of Tcl/Tk. 
+# We can't back link against static versions of Tcl/Tk.
 # If # ${TCL_SHARED_BUILD} can't be found or isn't "1", assume that
 # shared libraies weren't built.
 
@@ -1392,18 +1392,18 @@ BLT_LIB_PREFIX=${blt_lib_prefix}
 AC_SUBST(BLT_LIB_PREFIX)
 
 #--------------------------------------------------------------------
-#	The BLT script directory was either specified or we 
+#	The BLT script directory was either specified or we
 #	assume <prefix>/lib
 #--------------------------------------------------------------------
-if test "x${blt_with_scriptdir}" = "x" ; then 
+if test "x${blt_with_scriptdir}" = "x" ; then
   BLT_LIBRARY="${prefix}/lib/blt${BLT_VERSION}"
-else 
+else
   BLT_LIBRARY="${blt_with_scriptdir}/blt${BLT_VERSION}"
-fi 
+fi
 AC_SUBST(BLT_LIBRARY)
 
 #--------------------------------------------------------------------
-#	Print out some of the more important settings 
+#	Print out some of the more important settings
 #--------------------------------------------------------------------
 echo ""
 echo "Configuration results:"
