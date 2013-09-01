@@ -645,7 +645,7 @@ InitSink(bgPtr, sinkPtr, name, encoding)
     sinkPtr->name = name;
     sinkPtr->echo = FALSE;
     sinkPtr->fd = -1;
-    sinkPtr->file = (Tcl_File)NULL;
+    sinkPtr->file = (Tcl_File)0;
     sinkPtr->byteArr = sinkPtr->staticSpace;
     sinkPtr->size = DEF_BUFFER_SIZE;
     sinkPtr->encoding = encoding;
@@ -703,7 +703,7 @@ FreeSinkBuffer(sinkPtr)
 	Blt_Free(sinkPtr->byteArr);
     }
     sinkPtr->fd = -1;
-    sinkPtr->file = (Tcl_File)NULL;
+    sinkPtr->file = (Tcl_File)0;
 #if (TCL_MAJOR_VERSION >= 8)
     if (sinkPtr->objv != NULL) {
 	register int i;
@@ -855,7 +855,7 @@ CloseSink(interp, sinkPtr)
 #else
 	Tcl_DeleteFileHandler(sinkPtr->fd);
 #endif
-	sinkPtr->file = (Tcl_File)NULL;
+	sinkPtr->file = (Tcl_File)0;
 	sinkPtr->fd = -1;
 
 #if WINDEBUG
@@ -1309,7 +1309,7 @@ CollectData(bgPtr, sinkPtr)
     if ((sinkPtr->mark > sinkPtr->lastMark) &&
 	(sinkPtr->flags & SINK_NOTIFY)) {
 	unsigned char *data;
-	int length;
+	int length = 0;
 
 	if (sinkPtr->flags & SINK_BUFFERED) {
 	    /* For line-by-line updates, call NotifyOnUpdate for each
